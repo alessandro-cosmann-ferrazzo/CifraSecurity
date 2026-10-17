@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RC4 — Demonstração</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <p class="eyebrow">Engenharia da Computação · Cyber Security</p>
+      <h1>Demonstração da cifra RC4</h1>
+      <p class="byline">Daniel Arcego Babicz e Alessandro Cosmann Ferrazzo</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="operacao-titulo">
+      <div class="panel-head">
+        <h2 id="operacao-titulo">Operação</h2>
+        <p>A chave embaralha o estado interno. O texto só se combina com o fluxo gerado por essa chave, por XOR.</p>
+      </div>
+
+      <div class="fields">
+        <label class="field">
+          <span>Mensagem original</span>
+          <textarea id="mensagem" rows="4" spellcheck="false" placeholder="Digite a mensagem"></textarea>
+        </label>
+
+        <div class="key-row">
+          <label class="field">
+            <span>Chave</span>
+            <input id="chave" type="text" autocomplete="off" spellcheck="false" placeholder="Digite a chave">
+          </label>
+          <label class="field">
+            <span>Chave usada na decifragem</span>
+            <input id="chave-decifrar" type="text" autocomplete="off" spellcheck="false" placeholder="Mesma chave, ou outra para testar">
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-cifrar" type="button">Cifrar</button>
+        <button id="btn-decifrar" type="button" class="secondary">Decifrar</button>
+        <button id="btn-exemplo" type="button" class="ghost">Carregar exemplo</button>
+      </div>
+      <p id="aviso" class="aviso" role="status"></p>
+
+      <div class="results">
+        <article class="result">
+          <header>
+            <h3>Mensagem cifrada</h3>
+            <button id="btn-copiar" type="button" class="tiny" disabled>Copiar hex</button>
+          </header>
+          <p id="cifrado" class="mono out">—</p>
+          <p class="hint">Hexadecimal, como no exemplo da apresentação.</p>
+        </article>
+
+        <article class="result">
+          <header>
+            <h3>Mensagem recuperada</h3>
+            <span id="status-recuperada" class="pill">Aguardando</span>
+          </header>
+          <p id="recuperada" class="out">—</p>
+          <p id="detalhe-recuperada" class="hint"></p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="logica-titulo">
+      <div class="panel-head">
+        <h2 id="logica-titulo">Lógica da cifra</h2>
+        <p id="resumo-chave">Informe uma mensagem e uma chave para ver o fluxo byte a byte.</p>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <strong>KSA</strong>
+          <span>A chave percorre o vetor S, de 0 a 255, e troca posições. Ela não é gravada no texto cifrado.</span>
+        </li>
+        <li>
+          <strong>PRGA</strong>
+          <span>O estado embaralhado produz o fluxo Z, um byte para cada byte da mensagem.</span>
+        </li>
+        <li>
+          <strong>XOR</strong>
+          <span>Cifrar: C = P ⊕ Z. Decifrar: P = C ⊕ Z. A mesma chave recria o mesmo Z.</span>
+        </li>
+      </ol>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Bytes desta operação</caption>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Char</th>
+              <th>P</th>
+              <th>Z</th>
+              <th>C</th>
+              <th>P ⊕ Z</th>
+            </tr>
+          </thead>
+          <tbody id="tabela">
+            <tr>
+              <td colspan="6" class="empty">A tabela aparece depois de cifrar ou decifrar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="limits" aria-labelledby="limites-titulo">
+      <h2 id="limites-titulo">Limitações</h2>
+      <ul>
+        <li>O RC4 está proibido em TLS desde a RFC 7465, de 2015.</li>
+        <li>A mesma chave gera o mesmo fluxo. Duas mensagens cifradas com ela revelam P₁ ⊕ P₂.</li>
+        <li>O embaralhamento inicial tem viés estatístico. Isso sustenta ataques como o FMS.</li>
+        <li>Esta página demonstra o algoritmo. Ela não serve para proteger dados reais.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# Eclipse
+bin/
+*.class
+*.jar
+.metadata/
+LocalHistory/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Nested leftover folder (repo moved to project root)
+CirfraSecurity/
